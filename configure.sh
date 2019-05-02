@@ -72,10 +72,10 @@ echo "EJB_APP_DIR=${EJB_APP_DIR}"
 export LD_LIBRARY_PATH="$JVM_LIB_PATH:$RUST_LIB_DIR:$EJB_LIBPATH"
 echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-EJB_LOG_CONFIG_PATH="${HERE}/empty/log4j2.xml"
+EJB_LOG_CONFIG_PATH="${HERE}/${ARTIFACT_NAME}/log4j2.xml"
 echo "EJB_LOG_CONFIG_PATH=${EJB_LOG_CONFIG_PATH}"
 
-EJB_CLASSPATH="${HERE}/empty/target/${ARTIFACT_NAME}-${ARTIFACT_VERSION}-jar-with-dependencies.jar"
+EJB_CLASSPATH="${HERE}/${ARTIFACT_NAME}/target/${ARTIFACT_NAME}-${ARTIFACT_VERSION}-jar-with-dependencies.jar"
 echo "EJB_CLASSPATH=${EJB_CLASSPATH}"
 
 MANIFEST_PATH="${EJB_APP_DIR}/Cargo.toml"
@@ -151,7 +151,7 @@ header "<== FINALIZE NODE CONFIG"
 
 header "GENERATE START SCRIPT ==>"
 
-RUN="${HERE}/empty/run.sh"
+RUN="${HERE}/${ARTIFACT_NAME}/run.sh"
 chmod +x $RUN
 echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" > $RUN
 echo "mvn clean install -f ${PROJECT_POM_PATH}" >> $RUN
