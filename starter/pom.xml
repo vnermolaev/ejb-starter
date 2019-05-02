@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example.starter</groupId>
+  <artifactId>starter</artifactId>
+  <version>0.1.0</version>
+  <packaging>jar</packaging>
+
+  <name>Exonum Service</name>
+  <url>https://exonum.com/</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.compiler.source>8</java.compiler.source>
+    <java.compiler.target>8</java.compiler.target>
+    <!-- Dependencies-->
+    <exonum.version>0.5.0</exonum.version>
+    <protobuf.version>3.6.1</protobuf.version>
+    <lombok.version>1.18.6</lombok.version>
+    <!-- Test dependencies-->
+    <junit.jupiter.version>5.4.0</junit.jupiter.version>
+    <hamcrest.version>2.1</hamcrest.version>
+    <mockito.version>2.24.0</mockito.version>
+    <jsonpath.version>2.4.0</jsonpath.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.exonum.binding</groupId>
+        <artifactId>exonum-java-binding-bom</artifactId>
+        <version>${exonum.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.jupiter.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.exonum.binding</groupId>
+      <artifactId>exonum-java-binding-core</artifactId>
+    </dependency>
+
+    <!-- Make consensus time available in every block -->
+    <dependency>
+      <groupId>com.exonum.binding</groupId>
+      <artifactId>exonum-time-oracle</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java-util</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>${hamcrest.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path-assert</artifactId>
+      <version>${jsonpath.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <showWarnings>true</showWarnings>
+          <source>${java.compiler.source}</source>
+          <target>${java.compiler.target}</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+        <configuration>
+          <argLine>
+            -Djava.library.path=${env.EJB_HOME}/exonum-java-binding/core/rust/target/debug
+          </argLine>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.6.1</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>test-compile</goal>
+            </goals>
+            <configuration>
+              <protocArtifact>
+                com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
+              </protocArtifact>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+    <extensions>
+      <!-- Use an extension that sets the OS classifier, required to locate
+           the correct protoc executable -->
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>1.6.2</version>
+      </extension>
+    </extensions>
+
+  </build>
+
+  <profiles>
+    <profile>
+      <id>ejb-home-env</id>
+      <activation>
+        <property>
+          <name>!env.EJB_HOME</name>
+        </property>
+      </activation>
+      <properties>
+        <!-- Path to EJB project location.
+        EJB should present within the same dir with this project -->
+        <env.EJB_HOME>../exonum-java-binding</env.EJB_HOME>
+      </properties>
+    </profile>
+  </profiles>
+</project>
