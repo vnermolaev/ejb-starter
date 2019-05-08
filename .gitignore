@@ -29,7 +29,7 @@ exonum-java-binding
 testnet
 
 # target
-starter/target
+*/**/target/**
 
 # Java
 .classpath
