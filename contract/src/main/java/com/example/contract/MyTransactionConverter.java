@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.starter;
+package com.example.contract;
 
 import com.exonum.binding.transaction.Transaction;
 import com.exonum.binding.transaction.RawTransaction;

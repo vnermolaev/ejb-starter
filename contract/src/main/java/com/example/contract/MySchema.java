@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.starter;
+package com.example.contract;
 
 import com.exonum.binding.common.hash.HashCode;
 import com.exonum.binding.service.Schema;
