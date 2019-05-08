@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.starter;
+package com.example.contract;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
