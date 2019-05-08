@@ -152,11 +152,13 @@ header "<== FINALIZE NODE CONFIG"
 header "GENERATE START SCRIPT ==>"
 
 RUN="${HERE}/${ARTIFACT_NAME}/run.sh"
-chmod +x $RUN
+
 echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" > $RUN
 echo "mvn clean install -f ${PROJECT_POM_PATH}" >> $RUN
 echo "cargo run --manifest-path ${MANIFEST_PATH} -- run -d ${TESTNET}/db -c ${TESTNET}/node.toml --public-api-address 0.0.0.0:3000" >> $RUN
 echo "Execute ${RUN}"
+
+chmod +x $RUN
 
 header "<== GENERATE START SCRIPT"
 
